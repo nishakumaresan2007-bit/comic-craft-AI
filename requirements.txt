@@ -1,0 +1,1 @@
+﻿fastapi'nuvicorn'ninja2'npython-dotenv'ngoogle-generativeai

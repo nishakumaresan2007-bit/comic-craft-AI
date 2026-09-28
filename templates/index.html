@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ComicCraft - AI Comic Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-6">
+    <h1 class="text-4xl font-bold mb-2 text-yellow-400">ComicCraft 🎨</h1>
+    <p class="mb-6 text-gray-400">Create your AI comic story</p>
+    
+    <div class="w-full max-w-2xl bg-gray-800 p-6 rounded-xl shadow-lg">
+        <label class="block mb-2">Your Story Idea</label>
+        <textarea id="prompt" class="w-full p-3 rounded bg-gray-700 text-white" rows="3" placeholder="A boy finds a magic book..."></textarea>
+        
+        <label class="block mt-4 mb-2">Genre</label>
+        <select id="genre" class="w-full p-3 rounded bg-gray-700 text-white">
+            <option value="adventure">Adventure</option>
+            <option value="funny">Funny</option>
+            <option value="horror">Horror</option>
+            <option value="sci-fi">Sci-Fi</option>
+        </select>
+        
+        <button onclick="generate()" id="btn" class="mt-6 w-full bg-yellow-400 text-black font-bold py-3 rounded hover:bg-yellow-300">
+            Generate Comic
+        </button>
+        
+        <div id="result" class="mt-6 p-4 bg-gray-700 rounded hidden"></div>
+    </div>
+
+<script>
+async function generate(){
+    const prompt = document.getElementById('prompt').value;
+    const genre = document.getElementById('genre').value;
+    const btn = document.getElementById('btn');
+    const result = document.getElementById('result');
+    
+    if(!prompt){ alert("Prompt type pannu da!"); return; }
+    
+    btn.innerText = "Generating...";
+    result.classList.add('hidden');
+    
+    const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({prompt, genre})
+    });
+    const data = await res.json();
+    result.innerText = data.story;
+    result.classList.remove('hidden');
+    btn.innerText = "Generate Comic";
+}
+</script>
+</body>
+</html>
